@@ -7,7 +7,6 @@ const {
 } = require("./utils");
 
 const seed = async (data) => {
-	console.log("in seed");
 	const { categoryData, commentData, reviewData, userData } = data;
 	await db.query(`DROP TABLE IF EXISTS comments;`);
 	await db.query(`DROP TABLE IF EXISTS reviews;`);
