@@ -14,6 +14,7 @@ describe("GET /api/categories", () => {
       .get("/api/categories")
       .expect(200)
       .then(({ body }) => {
+
         expect(body.categories).toHaveLength(4);
         body.categories.forEach((category) => {
           expect(category).toEqual(
@@ -23,6 +24,8 @@ describe("GET /api/categories", () => {
             })
           );
         });
+        
+
       });
   });
 });

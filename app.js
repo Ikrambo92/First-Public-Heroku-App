@@ -22,5 +22,9 @@ app.use((req, res, next) => {
   }
 });
 
+app.all('/*', (req, res) => {
+    res.status(404).send({msg: "invalid endpoint"})
+})
+
 
 module.exports = app;
