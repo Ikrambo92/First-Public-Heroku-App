@@ -12,4 +12,10 @@ function selectReviews(reviewId) {
   });
 }
 
-module.exports = { selectCategories, selectReviews };
+function selectUsers() {
+  return db.query(`SELECT * FROM users`).then(({ rows }) => {
+    return rows;
+  });
+}
+
+module.exports = { selectCategories, selectReviews, selectUsers };
