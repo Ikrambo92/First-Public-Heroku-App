@@ -24,8 +24,6 @@ describe("GET /api/categories", () => {
             })
           );
         });
-        
-
       });
   });
 });
@@ -86,3 +84,35 @@ describe("GET /api/reviews/999999", () => {
       });
   });
 });
+
+describe("GET /api/users", () => {
+  test("200: should return an array of users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.users).toHaveLength(4);
+        body.users.forEach((user) => {
+          expect(user).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+              avatar_url: expect.any(String),
+              name: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+});
+
+describe("GET /api/12", () => {
+  test("404: should return not found", () => {
+    return request(app)
+      .get("/api/12")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "not found" });
+      });
+  });
+});
+

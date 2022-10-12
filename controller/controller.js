@@ -1,4 +1,4 @@
-const { selectCategories, selectReviews } = require('../model/model.js');
+const { selectCategories, selectReviews, selectUsers } = require('../model/model.js');
 
 function getCategories(req, res, next) {
     selectCategories().then((categories) => {
@@ -18,4 +18,12 @@ function getReviews(req, res, next) {
     .catch(next);
 }
 
-module.exports = { getCategories, getReviews }
+function getUsers(req, res, next) {
+    selectUsers()
+    .then((users) => {
+        res.status(200).send({ users });
+    })
+    .catch(next);
+}
+
+module.exports = { getCategories, getReviews, getUsers }
