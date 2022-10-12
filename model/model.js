@@ -6,4 +6,10 @@ function selectCategories() {
   });
 }
 
-module.exports = { selectCategories };
+function selectReviews(reviewId) {
+  return db.query(`SELECT * FROM reviews where review_id = $1`, [reviewId]).then(({ rows }) => {
+    return rows[0];
+  });
+}
+
+module.exports = { selectCategories, selectReviews };
