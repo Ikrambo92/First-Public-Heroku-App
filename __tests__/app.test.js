@@ -91,6 +91,7 @@ describe("GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
+        expect(body.users).toHaveLength(4);
         body.users.forEach((user) => {
           expect(user).toEqual(
             expect.objectContaining({
