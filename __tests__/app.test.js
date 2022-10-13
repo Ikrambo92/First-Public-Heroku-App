@@ -116,3 +116,64 @@ describe("GET /api/12", () => {
   });
 });
 
+
+describe("PATCH /api/reviews/1", () => {
+  test("200: should return the updated review", () => {
+    return request(app)
+      .patch("/api/reviews/1")
+      .send({ inputVote: 1 })
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.votes).toEqual(
+          expect.objectContaining({
+            title: "Agricola",
+            designer: "Uwe Rosenberg",
+            owner: "mallionaire",
+            review_img_url:
+              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+            review_body: "Farmyard fun!",
+            review_id: 1,
+            category: "euro game",
+            created_at: "2021-01-18T10:00:20.514Z",
+            votes: 2,
+          })
+        );
+      });
+  });
+});
+
+describe("PATCH /api/reviews/one", () => {
+  test("400: should return bad request", () => {
+    return request(app)
+      .patch("/api/reviews/one")
+      .send({ inc_votes: 1 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Bad request" });
+      });
+  });
+});
+
+describe("PATCH /api/reviews/999999", () => {
+  test("404: should return not found", () => {
+    return request(app)
+      .patch("/api/reviews/999999")
+      .send({ inc_votes: 1 })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "not found" });
+      });
+  });
+});
+
+describe("PATCH /api/reviews/1", () => {
+  test("400: should return bad request", () => {
+    return request(app)
+      .patch("/api/reviews/1")
+      .send({ inc_votes: "one" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Bad request" });
+      });
+  });
+});

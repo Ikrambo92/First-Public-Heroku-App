@@ -1,4 +1,4 @@
-const { selectCategories, selectReviews, selectUsers } = require('../model/model.js');
+const { selectCategories, selectReviews, selectUsers, newVote} = require('../model/model.js');
 
 function getCategories(req, res, next) {
     selectCategories().then((categories) => {
@@ -26,4 +26,19 @@ function getUsers(req, res, next) {
     .catch(next);
 }
 
-module.exports = { getCategories, getReviews, getUsers }
+function getNewVote(req, res, next) {
+  const reviewId = req.params.review_id;
+  const inputVote = req.body.inputVote;
+  newVote(reviewId, inputVote)
+    .then((votes) => {
+      if (!votes) {
+        res.status(404).send({ msg: "not found" });
+      }
+      res.status(200).send({ votes });
+    })
+    .catch(next);
+}
+
+
+
+module.exports = { getCategories, getReviews, getUsers, getNewVote }
