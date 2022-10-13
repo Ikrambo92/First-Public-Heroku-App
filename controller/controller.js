@@ -1,4 +1,9 @@
-const { selectCategories, selectReviews, selectUsers, newVote} = require('../model/model.js');
+const {
+  selectCategories,
+  selectReviewById,
+  selectUsers,
+  updateReviewById,
+} = require("../model/model.js");
 
 function getCategories(req, res, next) {
     selectCategories().then((categories) => {
@@ -6,9 +11,9 @@ function getCategories(req, res, next) {
     }).catch(next)
 }
 
-function getReviews(req, res, next) {
+function getReviewById(req, res, next) {
   const reviewId = req.params.review_id;
-  selectReviews(reviewId)
+  selectReviewById(reviewId)
     .then((reviews) => {
       if (!reviews) {
         res.status(404).send({ msg: "not found" });
@@ -26,10 +31,10 @@ function getUsers(req, res, next) {
     .catch(next);
 }
 
-function getNewVote(req, res, next) {
+function patchReviewById(req, res, next) {
   const reviewId = req.params.review_id;
   const inc_votes = req.body.inc_votes;
-  newVote(reviewId, inc_votes)
+  updateReviewById(reviewId, inc_votes)
     .then((votes) => {
       if (typeof inc_votes !== "number") {
         res.status(400).send({ msg: "Bad request" });
@@ -39,4 +44,5 @@ function getNewVote(req, res, next) {
     .catch(next);
 }
 
-module.exports = { getCategories, getReviews, getUsers, getNewVote }
+
+module.exports = { getCategories, getReviewById, getUsers, patchReviewById }

@@ -6,10 +6,19 @@ function selectCategories() {
   });
 }
 
-function selectReviews(reviewId) {
-  return db.query(`SELECT * FROM reviews where review_id = $1`, [reviewId]).then(({ rows }) => {
-    return rows[0];
-  });
+function selectReviewById(reviewId) {
+  return db
+    .query(
+      `SELECT reviews.*, count(comments.comment_id) AS comment_count
+      FROM reviews
+      LEFT JOIN comments ON reviews.review_id = comments.review_id
+      WHERE reviews.review_id = $1
+      GROUP BY reviews.review_id;`,
+      [reviewId]
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    });
 }
 
 function selectUsers() {
@@ -18,7 +27,7 @@ function selectUsers() {
   });
 }
 
-function newVote(reviewId, inc_votes) {
+function updateReviewById(reviewId, inc_votes) {
   return db
     .query(
       `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *`,
@@ -29,4 +38,5 @@ function newVote(reviewId, inc_votes) {
     });
 }
 
-module.exports = { selectCategories, selectReviews, selectUsers, newVote };
+
+module.exports = { selectCategories, selectReviewById, selectUsers, updateReviewById };

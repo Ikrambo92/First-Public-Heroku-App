@@ -66,21 +66,21 @@ describe("GET api/reviews/1", () => {
 describe("GET /api/reviews/one", () => {
   test("400: should return bad request", () => {
     return request(app)
-      .get("/api/reviews/one")
+    .get("/api/reviews/one")
       .expect(400)
       .then(({ body }) => {
         expect(body).toEqual({ msg: "Bad request" });
       });
-  });
+    });
 });
 
 describe("GET /api/reviews/999999", () => {
   test("404: should return not found", () => {
     return request(app)
-      .get("/api/reviews/999999")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "not found" });
+    .get("/api/reviews/999999")
+    .expect(404)
+    .then(({ body }) => {
+      expect(body).toEqual({ msg: "not found" });
       });
   });
 });
@@ -102,17 +102,17 @@ describe("GET /api/users", () => {
           );
         });
       });
+    });
   });
-});
-
+  
 describe("GET /api/12", () => {
   test("404: should return not found", () => {
     return request(app)
-      .get("/api/12")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "not found" });
-      });
+    .get("/api/12")
+    .expect(404)
+    .then(({ body }) => {
+      expect(body).toEqual({ msg: "not found" });
+    });
   });
 });
 
@@ -120,9 +120,9 @@ describe("GET /api/12", () => {
 describe("PATCH /api/reviews/1", () => {
   test("200: should return the updated review", () => {
     return request(app)
-      .patch("/api/reviews/1")
-      .send({ inc_votes: 1 })
-      .expect(200)
+    .patch("/api/reviews/1")
+    .send({ inc_votes: 1 })
+    .expect(200)
       .then(({ body }) => {
         expect(body.votes).toEqual(
           expect.objectContaining({
@@ -130,7 +130,7 @@ describe("PATCH /api/reviews/1", () => {
             designer: "Uwe Rosenberg",
             owner: "mallionaire",
             review_img_url:
-              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
             review_body: "Farmyard fun!",
             review_id: 1,
             category: "euro game",
@@ -139,30 +139,44 @@ describe("PATCH /api/reviews/1", () => {
           })
         );
       });
+    });
   });
-});
-
-describe("PATCH /api/reviews/one", () => {
+  
+  describe("PATCH /api/reviews/one", () => {
   test("400: should return bad request", () => {
     return request(app)
-      .patch("/api/reviews/one")
-      .send({ inc_votes: 1 })
+    .patch("/api/reviews/one")
+    .send({ inc_votes: 1 })
       .expect(400)
       .then(({ body }) => {
         expect(body).toEqual({ msg: "Bad request" });
       });
+    });
   });
-});
-
+  
 describe("PATCH /api/reviews/1", () => {
   test("400: should return bad request", () => {
     return request(app)
-      .patch("/api/reviews/1")
-      .send({ inc_votes: "one" })
-      .expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "Bad request" });
-      });
+    .patch("/api/reviews/1")
+    .send({ inc_votes: "one" })
+    .expect(400)
+    .then(({ body }) => {
+      expect(body).toEqual({ msg: "Bad request" });
+    });
   });
 });
 
+describe("GET api/reviews/2", () => {
+  test("should return ", () => {
+    return request(app)
+      .get("/api/reviews/2")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toEqual(
+          expect.objectContaining({
+            comment_count: expect.any(String),
+          })
+        );
+      });
+  });
+});
