@@ -121,7 +121,7 @@ describe("PATCH /api/reviews/1", () => {
   test("200: should return the updated review", () => {
     return request(app)
       .patch("/api/reviews/1")
-      .send({ inputVote: 1 })
+      .send({ inc_votes: 1 })
       .expect(200)
       .then(({ body }) => {
         expect(body.votes).toEqual(
@@ -154,18 +154,6 @@ describe("PATCH /api/reviews/one", () => {
   });
 });
 
-describe("PATCH /api/reviews/999999", () => {
-  test("404: should return not found", () => {
-    return request(app)
-      .patch("/api/reviews/999999")
-      .send({ inc_votes: 1 })
-      .expect(404)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: "not found" });
-      });
-  });
-});
-
 describe("PATCH /api/reviews/1", () => {
   test("400: should return bad request", () => {
     return request(app)
@@ -177,3 +165,4 @@ describe("PATCH /api/reviews/1", () => {
       });
   });
 });
+

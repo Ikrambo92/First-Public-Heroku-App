@@ -28,17 +28,15 @@ function getUsers(req, res, next) {
 
 function getNewVote(req, res, next) {
   const reviewId = req.params.review_id;
-  const inputVote = req.body.inputVote;
-  newVote(reviewId, inputVote)
+  const inc_votes = req.body.inc_votes;
+  newVote(reviewId, inc_votes)
     .then((votes) => {
-      if (!votes) {
-        res.status(404).send({ msg: "not found" });
+      if (typeof inc_votes !== "number") {
+        res.status(400).send({ msg: "Bad request" });
       }
       res.status(200).send({ votes });
     })
     .catch(next);
 }
-
-
 
 module.exports = { getCategories, getReviews, getUsers, getNewVote }

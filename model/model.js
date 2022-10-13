@@ -18,11 +18,11 @@ function selectUsers() {
   });
 }
 
-function newVote(reviewId, inputVote) {
+function newVote(reviewId, inc_votes) {
   return db
     .query(
       `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *`,
-      [inputVote, reviewId]
+      [inc_votes, reviewId]
     )
     .then(({ rows }) => {
       return rows[0];
