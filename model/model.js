@@ -18,4 +18,15 @@ function selectUsers() {
   });
 }
 
-module.exports = { selectCategories, selectReviews, selectUsers };
+function newVote(reviewId, inc_votes) {
+  return db
+    .query(
+      `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *`,
+      [inc_votes, reviewId]
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    });
+}
+
+module.exports = { selectCategories, selectReviews, selectUsers, newVote };

@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { getCategories, getReviews, getUsers } = require("./controller/controller.js");
+const { getCategories, getReviews, getUsers, getNewVote } = require("./controller/controller.js");
 app.use(express.json())
 
 app.get('/api/categories', getCategories);
@@ -8,6 +8,8 @@ app.get('/api/categories', getCategories);
 app.get('/api/reviews/:review_id', getReviews);
 
 app.get("/api/users", getUsers);
+
+app.patch("/api/reviews/:review_id", getNewVote);
 
 app.use((err, req, res, next) => {
   const codes = ["22P02", "23502"];
@@ -27,7 +29,5 @@ app.use((req, res, next) => {
 app.all('/*', (req, res) => {
     res.status(404).send({msg: "invalid endpoint"})
 })
-
-
 
 module.exports = app;
