@@ -38,5 +38,33 @@ function updateReviewById(reviewId, inc_votes) {
     });
 }
 
+function selectReviews(category) {
+  if (category) {
+    return db
+      .query(
+        `SELECT reviews.*, count(comments.comment_id) AS comment_count
+      FROM reviews
+      LEFT JOIN comments ON reviews.review_id = comments.review_id
+      WHERE category = $1
+      GROUP BY reviews.review_id;`,
+        [category]
+      )
+      .then(({ rows }) => {
+        return rows;
+      });
+  } else {
+    return db
+      .query(
+        `SELECT reviews.*, count(comments.comment_id) AS comment_count
+      FROM reviews
+      LEFT JOIN comments ON reviews.review_id = comments.review_id
+      GROUP BY reviews.review_id;`
+      )
+      .then(({ rows }) => {
+        return rows;
+      });
+  }
+}
 
-module.exports = { selectCategories, selectReviewById, selectUsers, updateReviewById };
+
+module.exports = { selectCategories, selectReviewById, selectUsers, updateReviewById, selectReviews };

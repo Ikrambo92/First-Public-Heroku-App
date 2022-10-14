@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { getCategories, getReviewById, getUsers, patchReviewById} = require("./controller/controller.js");
+const { getCategories, getReviewById, getUsers, patchReviewById, getReviews} = require("./controller/controller.js");
 app.use(express.json())
 
 app.get('/api/categories', getCategories);
@@ -11,6 +11,7 @@ app.get("/api/users", getUsers);
 
 app.patch("/api/reviews/:review_id", patchReviewById);
 
+app.get('/api/reviews/', getReviews);
 
 app.use((err, req, res, next) => {
   const codes = ["22P02", "23502"];

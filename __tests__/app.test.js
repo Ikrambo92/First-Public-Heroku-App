@@ -180,3 +180,110 @@ describe("GET api/reviews/2", () => {
       });
   });
 });
+
+describe("GET /api/reviews", () => {
+  test("200: should return an array of reviews", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body }) => {
+        // expect(body.reviews).toHaveLength(13);
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              review_id: expect.any(Number),
+              category: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+});
+
+
+describe("GET /api/reviews?category=euro game", () => {
+  test("200: should return an array of reviews", () => {
+    return request(app)
+      .get("/api/reviews?category=euro game")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toHaveLength(1);
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              review_id: expect.any(Number),
+              category: "euro game",
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+});
+
+describe("GET /api/reviewws", () => {
+  test("404: should return not found", () => {
+    return request(app)
+      .get("/api/reviewws")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "not found" });
+      });
+  });
+});
+
+describe("GET /api/reviews?category=bananas4life", () => {
+  test("200: should return an empty array", () => {
+    return request(app)
+      .get("/api/reviews?category=bananas4life")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual({reviews: []});
+      });
+  });
+});
+
+describe("GET /api/reviews?sort_by=created_at", () => {
+  test("200: should return an array of reviews sorted by date", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=created_at")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toHaveLength(13);
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              review_id: expect.any(Number),
+              category: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+
+        const sortedReviews = body.reviews.sort((x, y) => {
+          return new Date(y.created_at) - new Date(x.created_at);
+        });
+        expect(body.reviews).toEqual(sortedReviews);
+      });
+  });
+});
+
