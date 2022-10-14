@@ -3,6 +3,7 @@ const {
   selectReviewById,
   selectUsers,
   updateReviewById,
+  selectReviews
 } = require("../model/model.js");
 
 function getCategories(req, res, next) {
@@ -44,5 +45,19 @@ function patchReviewById(req, res, next) {
     .catch(next);
 }
 
+function getReviews(req, res, next) {
+  const category = req.query.category;
+  selectReviews(category)
+    .then((reviews) => {
+      if (category) {
+        if (reviews.length === 0) {
+          res.status(404).send({ msg: "not found" });
+        }
+      }
+      res.status(200).send({ reviews });
+    })
+    .catch(next);
+}
 
-module.exports = { getCategories, getReviewById, getUsers, patchReviewById }
+
+module.exports = { getCategories, getReviewById, getUsers, patchReviewById, getReviews }
