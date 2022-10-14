@@ -224,7 +224,7 @@ describe("GET /api/reviews?category=euro game", () => {
               review_img_url: expect.any(String),
               review_body: expect.any(String),
               review_id: expect.any(Number),
-              category: expect.any(String),
+              category: "euro game",
               created_at: expect.any(String),
               votes: expect.any(Number),
             })
@@ -286,3 +286,4 @@ describe("GET /api/reviews?sort_by=created_at", () => {
       });
   });
 });
+
