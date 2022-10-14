@@ -246,14 +246,43 @@ describe("GET /api/reviewws", () => {
 });
 
 describe("GET /api/reviews?category=bananas4life", () => {
-  test("404: should return not found", () => {
+  test("200: should return an empty array", () => {
     return request(app)
       .get("/api/reviews?category=bananas4life")
-      .expect(404)
+      .expect(200)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: "not found" });
+        expect(body).toEqual({reviews: []});
       });
   });
 });
 
+describe("GET /api/reviews?sort_by=created_at", () => {
+  test("200: should return an array of reviews sorted by date", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=created_at")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.reviews).toHaveLength(13);
+        body.reviews.forEach((review) => {
+          expect(review).toEqual(
+            expect.objectContaining({
+              title: expect.any(String),
+              designer: expect.any(String),
+              owner: expect.any(String),
+              review_img_url: expect.any(String),
+              review_body: expect.any(String),
+              review_id: expect.any(Number),
+              category: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
 
+        const sortedReviews = body.reviews.sort((x, y) => {
+          return new Date(y.created_at) - new Date(x.created_at);
+        });
+        expect(body.reviews).toEqual(sortedReviews);
+      });
+  });
+});

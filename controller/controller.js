@@ -49,11 +49,6 @@ function getReviews(req, res, next) {
   const category = req.query.category;
   selectReviews(category)
     .then((reviews) => {
-      if (category) {
-        if (reviews.length === 0) {
-          res.status(404).send({ msg: "not found" });
-        }
-      }
       res.status(200).send({ reviews });
     })
     .catch(next);
