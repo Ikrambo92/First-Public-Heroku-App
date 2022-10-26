@@ -17,6 +17,9 @@ function selectReviewById(reviewId) {
       [reviewId]
     )
     .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "not found" })
+      }
       return rows[0];
     });
 }
@@ -66,5 +69,28 @@ function selectReviews(category) {
   }
 }
 
+function selectComments(reviewId) {
+  return db
+    .query(
+      `SELECT * FROM comments
+      WHERE review_id=$1`,
+      [reviewId]
+    )
+    .then(({ rows }) => {
+      return rows;
+    });
+}
 
-module.exports = { selectCategories, selectReviewById, selectUsers, updateReviewById, selectReviews };
+function insertComment(reviewId, username, body) {
+  return db
+    .query(
+      `INSERT INTO comments (author, review_id, body) VALUES ($1, $2, $3) RETURNING *`,
+      [username, reviewId, body]
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    });
+}
+
+
+module.exports = { selectCategories, selectReviewById, selectUsers, updateReviewById, selectReviews, selectComments, insertComment };

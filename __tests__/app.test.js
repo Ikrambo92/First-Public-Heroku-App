@@ -287,3 +287,59 @@ describe("GET /api/reviews?sort_by=created_at", () => {
   });
 });
 
+describe("GET /api/reviews/1/comments", () => {
+  test("200: should return an array of comments", () => {
+    return request(app)
+      .get("/api/reviews/2/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toHaveLength(3);
+        body.comments.forEach((comment) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              votes: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+});
+
+describe('GET /api/reviews/banana/comments', () => {
+    test('400: should return bad request', () => {
+      return request(app) 
+        .get("/api/reviews/banana/comments")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body).toEqual({ msg: "Bad request"})
+        })
+    });
+});
+
+describe('GET /api/reviews/999999/comments', () => {
+    test('404: should return not found', () => {
+      return request(app)
+        .get("/api/reviews/999999/comments")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body).toEqual({ msg: "not found" });
+        });
+    });
+});
+
+// describe.only("POST /api/reviews/1/comments", () => {
+//   test("201: should return the posted comment", () => {
+//     return request(app)
+//       .post("/api/reviews/1/comments")
+//       .send({ username: "bainesface", body: "test comment" })
+//       .expect(201)
+//       .then(({ body }) => {
+//         expect(body.comment).toEqual(
+//           expect.objectContaining({
+//             comment_id: expect.any(Number),
+//           })
+//         );
+//       });
+//   });
+// });
