@@ -287,7 +287,7 @@ describe("GET /api/reviews?sort_by=created_at", () => {
   });
 });
 
-describe("GET /api/reviews/1/comments", () => {
+describe("GET /api/reviews/2/comments", () => {
   test("200: should return an array of comments", () => {
     return request(app)
       .get("/api/reviews/2/comments")
@@ -328,18 +328,46 @@ describe('GET /api/reviews/999999/comments', () => {
     });
 });
 
-// describe.only("POST /api/reviews/1/comments", () => {
-//   test("201: should return the posted comment", () => {
-//     return request(app)
-//       .post("/api/reviews/1/comments")
-//       .send({ username: "bainesface", body: "test comment" })
-//       .expect(201)
-//       .then(({ body }) => {
-//         expect(body.comment).toEqual(
-//           expect.objectContaining({
-//             comment_id: expect.any(Number),
-//           })
-//         );
-//       });
-//   });
-// });
+describe("POST /api/reviews/2/comments", () => {
+  test("201: should return the posted comment", () => {
+    return request(app)
+      .post("/api/reviews/2/comments")
+      .send({ username: "bainesface", body: "test comment" })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: expect.any(Number),
+          })
+        );
+      });
+  });
+});
+
+describe("POST /api/reviews/3/comments", () => {
+  test("201: should return the posted comment", () => {
+    return request(app)
+      .post("/api/reviews/3/comments")
+      .send({ username: "bainesface", body: "I am a comment" })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: expect.any(Number),
+          })
+        );
+      });
+  });
+});
+
+describe("POST /api/reviews/banana/comments", () => {
+  test("400: should return bad request", () => {
+    return request(app)
+      .post("/api/reviews/banana/comments")
+      .send({ username: "bainesface", body: "test comment" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Bad request" });
+      });
+  });
+});

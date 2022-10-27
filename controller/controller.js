@@ -69,7 +69,7 @@ function getComments(req, res, next) {
 }
 
 function postComment(req, res, next) {
-  const reviewId = req.params.review_id;
+  const reviewId = req.params.reviews_id;
   const username = req.body.username;
   const body = req.body.body;
   insertComment(reviewId, username, body)
